@@ -230,8 +230,9 @@
     <div class="block" id="appBlock" hidden>
       <a class="btn btn-gold" id="storeLink" rel="noopener noreferrer" target="_blank">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
-        نزّل تطبيق التوافق من Google Play
+        <span id="storeText">نزّل تطبيق التوافق من Google Play</span>
       </a>
+      <p id="storeNote" hidden style="margin:6px 0 0;text-align:center;font-size:13px;color:var(--muted)">ملف APK لهواتف أندرويد</p>
     </div>
 
     <!-- التواصل -->
@@ -253,7 +254,12 @@
     <p class="notice" id="notice" hidden></p>
   </main>
 
-  <footer>التوافق لصيانة الهواتف، صرمان</footer>
+  <footer>التوافق لصيانة الهواتف، صرمان
+    <nav style="margin-top:8px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap">
+      <a href="privacy.html">سياسة الخصوصية</a>
+      <a href="delete-account.html">حذف الحساب</a>
+    </nav>
+  </footer>
 </div>
 
 <script>
@@ -479,7 +485,13 @@
 
     var store = httpsUrl(c.store_url);
     $("appBlock").hidden = !store;
-    if (store) $("storeLink").href = store;
+    if (store) {
+      $("storeLink").href = store;
+      // نص الزر يتبع الرابط: صفحة Google Play، أو ملف APK مباشر
+      var play = store.indexOf("play.google.com") !== -1;
+      $("storeText").textContent = play ? "نزّل تطبيق التوافق من Google Play" : "نزّل تطبيق التوافق";
+      $("storeNote").hidden = play;
+    }
 
     var about = (Array.isArray(content) ? content : []).filter(function (x) { return x && x.section === "about" && x.is_active !== false && (x.title || x.body); });
     var list = $("aboutList"); list.textContent = "";
